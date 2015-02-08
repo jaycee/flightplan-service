@@ -1,3 +1,8 @@
 *~
-.sw*
-.py*
+.*.sw*
+*.py*
+bin/
+include/
+lib/
+local/
+weather_service.egg-info

@@ -2,6 +2,8 @@ import unittest
 
 from pyramid import testing
 
+from .views import forecast
+
 
 class ViewTests(unittest.TestCase):
     def setUp(self):
@@ -11,7 +13,7 @@ class ViewTests(unittest.TestCase):
         testing.tearDown()
 
     def test_my_view(self):
-        from .views import my_view
         request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info['project'], 'weather_service')
+        request.params = {'coords': '1,2'}
+        parsed_coords = forecast(request).get('coordinates')
+        self.assertEqual(parsed_coords, [(1.0, 2.0)])

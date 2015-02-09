@@ -1,7 +1,7 @@
 from pyramid.view import view_config
 
 @view_config(route_name='home', renderer='json')
-def my_view(request):
+def forecast(request):
     raw_coords = request.params.get('coords')
 
     if raw_coords is None:

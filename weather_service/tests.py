@@ -12,7 +12,7 @@ class ViewTests(unittest.TestCase):
     def tearDown(self):
         testing.tearDown()
 
-    def test_my_view(self):
+    def test_coordinates(self):
         request = testing.DummyRequest()
         request.params = {'coords': '1,2'}
         parsed_coords = forecast(request).get('coordinates')

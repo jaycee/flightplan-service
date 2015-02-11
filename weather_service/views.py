@@ -1,6 +1,14 @@
+from datetime import (
+    datetime,
+    timedelta,
+    )
+
 from pyramid.view import view_config
 
-@view_config(route_name='home', renderer='json')
+from forecast import Forecaster, API
+
+
+@view_config(route_name='home', renderer='jsonp')
 def forecast(request):
     raw_coords = request.params.get('coords')
 
@@ -15,4 +23,16 @@ def forecast(request):
             coord = float(raw_coords[i]), float(raw_coords[i+1])
             coords.append(coord) 
 
-    return {'coordinates': coords}
+    # For now assume a time interval of 1 hour, and start at now.
+    interval = timedelta(hours=1)
+    now = datetime.now()
+    f = Forecaster(API)
+
+    forecasts = []
+    for i,c in enumerate(coords):
+        time = now + (i*interval)
+        forecast = f.forecast(*c, time=time)
+        forecasts.append((c, forecast, time.strftime('%R')))
+
+    request.response.status = 200
+    return { 'forecasts': forecasts }

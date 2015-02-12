@@ -11,20 +11,26 @@ from .forecast import Forecaster
 @view_config(route_name='home', renderer='jsonp')
 def forecast(request):
     raw_coords = request.params.get('coords')
+    interval = request.params.get('interval')
 
     if raw_coords is None:
         request.response.status = 400
         return {'errors': 'No coordinates specified.'}
+    else:
+        coords = []
+        raw_coords = raw_coords.split(",")
+        for i in range(len(raw_coords)):
+            if i % 2 == 0:
+                coord = float(raw_coords[i]), float(raw_coords[i+1])
+                coords.append(coord) 
 
-    coords = []
-    raw_coords = raw_coords.split(",")
-    for i in range(len(raw_coords)):
-        if i % 2 == 0:
-            coord = float(raw_coords[i]), float(raw_coords[i+1])
-            coords.append(coord) 
+    if interval is None:
+        interval = 1
+    else:
+        interval = float(interval)
 
-    # For now assume a time interval of 1 hour, and start at now.
-    interval = timedelta(hours=1)
+
+    interval = timedelta(hours=interval)
     now = datetime.now()
     api_key = request.registry.settings.get('API_KEY')
     f = Forecaster(api_key)

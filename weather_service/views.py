@@ -33,6 +33,5 @@ def forecast(request):
         time = now + (i*interval)
         forecast = f.forecast(*c, time=time)
         forecasts.append((c, forecast, time.strftime('%R')))
-
     request.response.status = 200
     return { 'forecasts': forecasts }

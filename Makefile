@@ -15,6 +15,9 @@ bin/pserve: bin/pip
 bin/py.test: bin/pip
 	bin/pip install -r requirements.txt
 
+bin/gunicorn:
+	bin/pip install -r requirements.txt
+
 $(APP): bin/python
 	bin/python setup.py develop
 
@@ -27,3 +30,9 @@ test: bin/py.test
 clean:
 	- rm -rf bin/ include/ lib/ local/
 	- rm -rf weather_service.egg-info
+
+start_serve: $(APP) bin/gunicorn
+	bin/gunicorn -w 4 -p weatherservice.pid -D weather_service:main
+
+stop_serve:
+	- kill -s 3 `cat weatherservice.pid`

@@ -1,7 +1,6 @@
 from forecastio import load_forecast
 
 
-API = '1c6a2316d481f325d12c82dc64a582fd'
 DEFAULT_FIELDS = [
     'temperature',
     'humidity',

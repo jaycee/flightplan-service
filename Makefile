@@ -22,7 +22,7 @@ $(APP): bin/python
 	bin/python setup.py develop
 
 run: $(APP) bin/pserve 
-	bin/pserve --reload development.ini
+	bin/pserve --reload weather_service.ini
 
 test: bin/py.test
 	bin/py.test -s weather_service/tests.py
@@ -31,8 +31,14 @@ clean:
 	- rm -rf bin/ include/ lib/ local/
 	- rm -rf weather_service.egg-info
 
+dev_setup:
+	cp development.ini weather_service.ini
+
+production_setup:
+	cp production.ini weather_service.ini
+
 start_serve: $(APP) bin/gunicorn
-	bin/gunicorn -w 4 -p weatherservice.pid -D weather_service:main
+	bin/pserve --pid-file=weatherservice.pid --daemon weather_service.ini
 
 stop_serve:
 	- kill -s 3 `cat weatherservice.pid`

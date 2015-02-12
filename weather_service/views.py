@@ -5,7 +5,7 @@ from datetime import (
 
 from pyramid.view import view_config
 
-from forecast import Forecaster, API
+from forecast import Forecaster
 
 
 @view_config(route_name='home', renderer='jsonp')
@@ -26,7 +26,8 @@ def forecast(request):
     # For now assume a time interval of 1 hour, and start at now.
     interval = timedelta(hours=1)
     now = datetime.now()
-    f = Forecaster(API)
+    api_key = request.registry.settings.get('API_KEY')
+    f = Forecaster(api_key)
 
     forecasts = []
     for i,c in enumerate(coords):

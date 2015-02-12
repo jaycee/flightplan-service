@@ -23,7 +23,7 @@ class ViewTests(unittest.TestCase):
     def test_coordinates(self):
         request = testing.DummyRequest()
         request.params = {'coords': '1,2'}
-        with patch('forecast.Forecaster.forecast') as f_mock:
+        with patch('weather_service.forecast.Forecaster.forecast') as f_mock:
             fake_forecast = {
                 'temperature': 1,
                 'humidity': 2,
@@ -59,7 +59,7 @@ class ForecastTests(unittest.TestCase):
 
     def test_forecast(self):
         f = Forecaster('FAKE_API_KEY')
-        with patch('forecast.load_forecast') as f_mock:
+        with patch('weather_service.forecast.load_forecast') as f_mock:
             fake = FakeForecast()
             f_mock.return_value = fake
             now = datetime.now()

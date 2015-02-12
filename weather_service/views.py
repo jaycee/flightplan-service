@@ -5,7 +5,7 @@ from datetime import (
 
 from pyramid.view import view_config
 
-from forecast import Forecaster
+from .forecast import Forecaster
 
 
 @view_config(route_name='home', renderer='jsonp')
